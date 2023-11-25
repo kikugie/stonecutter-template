@@ -13,3 +13,6 @@ stonecutter.registerChiseled tasks.register("chiseledPublishMods", stonecutter.c
 
     ofTask "publishMods"
 }
+
+// Debug mode adds 'true' and 'false' expressions to conditional blocks
+stonecutter.debug false

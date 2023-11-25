@@ -2,6 +2,7 @@ plugins {
     id "fabric-loom" version "1.4-SNAPSHOT"
     id "maven-publish"
     id "me.modmuss50.mod-publish-plugin" version "0.4.+"
+    id "org.jetbrains.kotlin.jvm" version "${kotlin_version}"
 }
 
 archivesBaseName = property("mod.name")
@@ -46,6 +47,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${stonecutter.current().version()}"
     mappings "net.fabricmc:yarn:${property("deps.yarn")}:v2"
     modImplementation "net.fabricmc:fabric-loader:${property("deps.fabric_loader")}"
+    modImplementation("net.fabricmc:fabric-language-kotlin:${property("deps.flk")}+kotlin.${kotlin_version}")
     modImplementation "net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}"
 
     modApi "com.terraformersmc:modmenu:${property("deps.modmenu")}"
@@ -59,6 +61,7 @@ processResources {
                 "display": project.property("mod.display"),
                 "mod_version": version,
                 "target_minecraft": target,
+                "flk": project.property("deps.flk"),
                 "modrinth": project.property("publish.modrinth")
     }
 }
@@ -126,7 +129,13 @@ assemble {
 }
 
 if (stonecutter.current().isActiveVersion()) {
-    loom.runConfigs.server.ideConfigGenerated = true
+    loom {
+        runConfigs.client {
+            ideConfigGenerated = true
+            vmArgs "-Dmixin.debug.export=true"
+            runDir "../../run"
+        }
+    }
 
     rootProject.tasks.register("buildActive") {
         setGroup "project"

@@ -14,7 +14,7 @@ pluginManagement {
 }
 
 plugins {
-	id 'io.shcm.shsupercm.fabric.stonecutter' version '1.5'
+	id 'io.shcm.shsupercm.fabric.stonecutter' version '1.5-dev.5'
 }
 
 stonecutter {
